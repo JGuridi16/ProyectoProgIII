@@ -15,7 +15,7 @@ const activeLinkStyle = {
 };
 
 const HuStyle = {
-    marginTop: 10,
+
 };
 
 const marginLeft = {
@@ -44,22 +44,10 @@ const activeNavLinkStyle = {
     ...bold
 };
 
-const successNotify = (text = "Operación realizada con exito") => toast.success(text, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-});
-
 const Header = ({ toggleSidebar, opeationSuccess }) => {
 
     useEffect(() => {
-        if (opeationSuccess !== 0) {
-            successNotify();
-        }
+        
     }, [opeationSuccess]);
 
     return (
@@ -68,7 +56,7 @@ const Header = ({ toggleSidebar, opeationSuccess }) => {
             <Navbar bg="primary" variant="dark">
                 <Nav className="mr-auto">
                     <div style={HuStyle}>
-                        <NavLink className="mr-3 navlink"
+                        <NavLink className="mr-1 navlink"
                             to="/"
                             exact
                             style={navLinkStyle}
