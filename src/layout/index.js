@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './header';
-import Router from 'router';
+import Router from '../router';
 import { isBrowser } from 'react-device-detect';
 import Spinner from 'react-bootstrap/Spinner';
 import './style.css';
