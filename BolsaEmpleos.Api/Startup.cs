@@ -23,10 +23,9 @@ namespace BolsaEmpleos.Api
             #region IoC Control
 
             services.AddControllers();
-            services
-                .AddDatabase(Configuration)
-                .AddRepositories();
-            services.AddServices();
+            services.AddDatabase(Configuration);
+            services.AddRepositories();
+            services.AddServices(Configuration);
             #endregion
 
             #region Adding External Libraries

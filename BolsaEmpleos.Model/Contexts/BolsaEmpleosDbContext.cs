@@ -10,7 +10,10 @@ namespace BolsaEmpleos.Model.Contexts
         }
 
         #region Tables
-        public DbSet<Example> Example { get; set; }
+        public DbSet<Position> Positions { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Aplicant> Aplicants { get; set; }
         #endregion
 
         public DbSet<T> GetDbSet<T>() where T : class => Set<T>();

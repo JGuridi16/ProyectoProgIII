@@ -12,9 +12,9 @@ namespace BolsaEmpleos.Model.UnitOfWorks
             _dbFactory = dbFactory;
         }
 
-        public Task<int> CommitAsync()
+        public async Task<int> CommitAsync()
         {
-            return _dbFactory.DbContext.SaveChangesAsync();
+            return await _dbFactory.DbContext.SaveChangesAsync();
         }
     }
 }

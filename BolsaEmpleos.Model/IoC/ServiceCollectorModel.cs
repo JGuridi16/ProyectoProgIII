@@ -11,7 +11,7 @@ namespace BolsaEmpleos.Model.IoC
 {
     public static class ServiceCollectorModel
     {
-        public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+        public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             // Configure DbContext with Scoped lifetime   
             services.AddDbContext<BolsaEmpleosDbContext>(options => 
@@ -22,13 +22,15 @@ namespace BolsaEmpleos.Model.IoC
             services.AddScoped<DbFactory>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            return services;
         }
 
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IExampleRepository, ExampleRepository>();
+            services.AddScoped<IAplicantRepository, AplicantRepository>();
+            services.AddScoped<IPositionRepository, PositionRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }
