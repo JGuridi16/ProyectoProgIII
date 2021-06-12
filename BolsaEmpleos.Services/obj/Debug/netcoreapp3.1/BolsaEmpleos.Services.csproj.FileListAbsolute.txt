@@ -1,0 +1,12 @@
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\bin\Debug\netcoreapp3.1\BolsaEmpleos.Services.deps.json
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\bin\Debug\netcoreapp3.1\BolsaEmpleos.Services.dll
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\bin\Debug\netcoreapp3.1\BolsaEmpleos.Services.pdb
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\bin\Debug\netcoreapp3.1\BolsaEmpleos.Model.dll
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\bin\Debug\netcoreapp3.1\BolsaEmpleos.Model.pdb
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\obj\Debug\netcoreapp3.1\BolsaEmpleos.Services.csprojAssemblyReference.cache
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\obj\Debug\netcoreapp3.1\BolsaEmpleos.Services.AssemblyInfoInputs.cache
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\obj\Debug\netcoreapp3.1\BolsaEmpleos.Services.AssemblyInfo.cs
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\obj\Debug\netcoreapp3.1\BolsaEmpleos.Services.csproj.CoreCompileInputs.cache
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\obj\Debug\netcoreapp3.1\BolsaEmpleos.Services.csproj.CopyComplete
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\obj\Debug\netcoreapp3.1\BolsaEmpleos.Services.dll
+C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Services\obj\Debug\netcoreapp3.1\BolsaEmpleos.Services.pdb
