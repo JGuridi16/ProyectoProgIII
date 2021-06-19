@@ -7,7 +7,7 @@ const BaseTable = () => {
     const [data, setData] = useState([
         {
             position : 'Gerente',
-            enterprise : 'Claro',
+            enterprise : 'Altice',
             location : '27 febrero SD DN'
         }
     ]);
