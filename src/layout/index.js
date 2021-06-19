@@ -3,7 +3,7 @@ import Header from './header';
 import Router from '../router';
 import { isBrowser } from 'react-device-detect';
 import Spinner from 'react-bootstrap/Spinner';
-import './style.css';
+import './style.scss';
 
 const whiteWords = {
     color: 'white'

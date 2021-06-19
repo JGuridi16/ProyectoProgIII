@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import BaseTable from '../BaseTable';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import BaseListSelect from '../BaseSelect';
@@ -7,7 +6,6 @@ import { Form } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import Col from 'react-bootstrap/Col';
 import DragDropFileInline from '../DragDropFileInLine'; 
-import FormCheckInput from 'react-bootstrap/esm/FormCheckInput';
 
 let yup = require('yup');
 
@@ -94,7 +92,7 @@ const PostJob = () => {
                                     </h2>
                                 </div>
                                 <Card className="p-3 my-4">
-                                    <Form.Row>
+                                    <Form.Row className="my-3">
                                         <Form.Group as={Col} md="6" controlId="postName">
                                             <Form.Label> <b> Nombre del Puesto </b> </Form.Label>
                                             <Form.Control
@@ -119,7 +117,6 @@ const PostJob = () => {
                                             title="Categoria"
                                             column={6}
                                         />
-                                    </Form.Row>
                                     <Form.Group as={Col} md="12" controlId="postDescription">
                                         <Form.Label> <b> Descripción del Puesto </b> </Form.Label>
                                         <Form.Control
@@ -148,8 +145,10 @@ const PostJob = () => {
                                             {errors.howToApply}
                                         </Form.Control.Feedback>
                                     </Form.Group>
+                                    </Form.Row>
                                 </Card>
                                 <Card className="p-3 my-4">
+                                    <Form.Row className="my-3">
                                     <Form.Group as={Col} md="6" controlId="companyName">
                                         <Form.Label> <b> Nombre de la Compañía * </b> </Form.Label>
                                         <Form.Control
@@ -238,6 +237,7 @@ const PostJob = () => {
                                             {errors.userEmail}
                                         </Form.Control.Feedback>
                                     </Form.Group>
+                                    </Form.Row>
                                 </Card>
                                 <Form.Group className="my-3 d-flex justify-content-end align-items-end" as={Col} md="12">
                                     <Button size="md" type="submit">Guardar</Button>
