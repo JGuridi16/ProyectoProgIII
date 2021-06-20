@@ -10,42 +10,76 @@ namespace BolsaEmpleos.Model.Repositories
     public class Repository<T> : IRepository<T> where T : class, IBaseEntity
     {
         private readonly DbFactory _dbFactory;
-        private DbSet<T> _dbSet;
+        private readonly DbSet<T> _dbSet;
 
-        protected DbSet<T> DbSet
-        {
-            get => _dbSet ??= _dbFactory.DbContext.Set<T>();
-        }
 
         public Repository(DbFactory dbFactory)
         {
             _dbFactory = dbFactory;
+            _dbSet = _dbSet ??= _dbFactory.DbContext.Set<T>();
         }
 
-        public IQueryable<T> List(Expression<Func<T, bool>> expression)
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
         {
-            return DbSet.Where(expression);
+            IQueryable<T> list = _dbSet.AsQueryable();
+
+            foreach (var includeProperty in includeProperties)
+            {
+                list = list.Include(includeProperty);
+            }
+
+            if (predicate is null)
+                return list;
+
+            return list.Where(predicate);
+        }
+
+        public virtual T GetById(int id, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> list = _dbSet.AsQueryable();
+
+            foreach (var includeProperty in includeProperties)
+            {
+                list = list.Include(includeProperty);
+            }
+
+            return list.FirstOrDefault(x => x.Id == id);
+        }
+
+        public IQueryable<T> Where(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> list = _dbSet.AsQueryable();
+
+            foreach (var includeProperty in includeProperties)
+            {
+                list = list.Include(includeProperty);
+            }
+
+            if (predicate is null)
+                return list;
+
+            return list.Where(predicate);
         }
 
         public void Add(T entity)
         {
-            DbSet.Add(entity);
+            _dbSet.Add(entity);
         }
 
         public void Update(T entity)
         {
-            DbSet.Update(entity);
+            _dbSet.Update(entity);
         }
 
         public void Delete(T entity)
         {
             if (typeof(BaseEntity).IsAssignableFrom(typeof(T)))
             {
-                (entity).IsDeleted = true;
-                DbSet.Update(entity);
+                entity.IsDeleted = true;
+                _dbSet.Update(entity);
             }
             else
-                DbSet.Remove(entity);
+                _dbSet.Remove(entity);
         }
     }
 }
