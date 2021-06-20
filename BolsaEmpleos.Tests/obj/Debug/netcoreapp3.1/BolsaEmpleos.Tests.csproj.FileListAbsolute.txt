@@ -1,9 +1,0 @@
-C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Tests\bin\Debug\netcoreapp3.1\BolsaEmpleos.Tests.deps.json
-C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Tests\bin\Debug\netcoreapp3.1\BolsaEmpleos.Tests.dll
-C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Tests\bin\Debug\netcoreapp3.1\BolsaEmpleos.Tests.pdb
-C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Tests\obj\Debug\netcoreapp3.1\BolsaEmpleos.Tests.csprojAssemblyReference.cache
-C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Tests\obj\Debug\netcoreapp3.1\BolsaEmpleos.Tests.AssemblyInfoInputs.cache
-C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Tests\obj\Debug\netcoreapp3.1\BolsaEmpleos.Tests.AssemblyInfo.cs
-C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Tests\obj\Debug\netcoreapp3.1\BolsaEmpleos.Tests.csproj.CoreCompileInputs.cache
-C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Tests\obj\Debug\netcoreapp3.1\BolsaEmpleos.Tests.dll
-C:\Users\hp\source\repos\BolsaEmpleos\BolsaEmpleos.Tests\obj\Debug\netcoreapp3.1\BolsaEmpleos.Tests.pdb
