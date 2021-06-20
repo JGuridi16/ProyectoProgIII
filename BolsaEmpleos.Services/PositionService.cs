@@ -31,14 +31,12 @@ namespace BolsaEmpleos.Services
         public async Task<IEnumerable<Position>> GetAll()
         {
             return await _repository.GetAll()
-                .AsQueryable()
-                .Where(x => x.IsDeleted == false)
                 .ToListAsync();
         }
 
         public Position GetOne(int id)
         {
-            return _repository.GetById(id);
+            return _repository.GetByIdAsNoTracking(id);
         }
 
         public async Task<Position> Save(Position position)
@@ -52,7 +50,7 @@ namespace BolsaEmpleos.Services
 
         public async Task<Position> Update(int id, Position position)
         {
-            var entity = _repository.GetById(id);
+            var entity = _repository.GetByIdAsNoTracking(id);
             if (entity is null) return null;
 
             _repository.Update(position);
@@ -67,7 +65,7 @@ namespace BolsaEmpleos.Services
             var entity = _repository.GetById(id);
             if (entity is null) return null;
 
-            _repository.Delete(entity);
+            _repository.Delete(id);
 
             await _uow.CommitAsync();
 

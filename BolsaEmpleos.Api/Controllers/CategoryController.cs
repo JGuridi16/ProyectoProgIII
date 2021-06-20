@@ -1,5 +1,7 @@
-﻿using BolsaEmpleos.Services;
+﻿using BolsaEmpleos.Model.Entities;
+using BolsaEmpleos.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace BolsaEmpleos.Api.Controllers
 {
@@ -15,27 +17,38 @@ namespace BolsaEmpleos.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok();
+            var categories = await _service.GetAll();
+            return Ok(categories);
+        }
+        
+        [HttpGet("{id}")]
+        public IActionResult GetById([FromRoute] int id)
+        {
+            var category = _service.GetOne(id);
+            return Ok(category);
         }
 
-        [HttpPost]
-        public IActionResult Post()
+        [HttpPost()]
+        public async Task<IActionResult> Post([FromBody] Category category)
         {
-            return Ok();
+            var entity = await _service.Save(category);
+            return Ok(entity);
         }
 
-        [HttpPut]
-        public IActionResult Put()
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] Category category)
         {
-            return Ok();
+            var entity = await _service.Update(id, category);
+            return Ok(entity);
         }
 
-        [HttpDelete]
-        public IActionResult Delete()
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            return Ok();
+            var entity = await _service.Delete(id);
+            return Ok(entity);
         }
     }
 }

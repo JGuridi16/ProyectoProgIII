@@ -12,7 +12,6 @@ namespace BolsaEmpleos.Model.Repositories
         private readonly DbFactory _dbFactory;
         private readonly DbSet<T> _dbSet;
 
-
         public Repository(DbFactory dbFactory)
         {
             _dbFactory = dbFactory;
@@ -21,12 +20,11 @@ namespace BolsaEmpleos.Model.Repositories
 
         public IQueryable<T> GetAll(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
         {
-            IQueryable<T> list = _dbSet.AsQueryable();
+            IQueryable<T> list = _dbSet.AsQueryable()
+                .Where(x => x.IsDeleted == false);
 
             foreach (var includeProperty in includeProperties)
-            {
                 list = list.Include(includeProperty);
-            }
 
             if (predicate is null)
                 return list;
@@ -39,11 +37,22 @@ namespace BolsaEmpleos.Model.Repositories
             IQueryable<T> list = _dbSet.AsQueryable();
 
             foreach (var includeProperty in includeProperties)
-            {
                 list = list.Include(includeProperty);
-            }
 
-            return list.FirstOrDefault(x => x.Id == id);
+            return list.Where(x => x.IsDeleted == false)
+                .FirstOrDefault(x => x.Id == id);
+        }
+
+        public virtual T GetByIdAsNoTracking(int id, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> list = _dbSet.AsQueryable();
+
+            foreach (var includeProperty in includeProperties)
+                list = list.Include(includeProperty);
+
+            return list.Where(x => x.IsDeleted == false)
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public IQueryable<T> Where(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
@@ -51,9 +60,7 @@ namespace BolsaEmpleos.Model.Repositories
             IQueryable<T> list = _dbSet.AsQueryable();
 
             foreach (var includeProperty in includeProperties)
-            {
                 list = list.Include(includeProperty);
-            }
 
             if (predicate is null)
                 return list;
@@ -68,18 +75,13 @@ namespace BolsaEmpleos.Model.Repositories
 
         public void Update(T entity)
         {
-            _dbSet.Update(entity);
+            _dbFactory.DbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Delete(T entity)
+        public void Delete(int id)
         {
-            if (typeof(BaseEntity).IsAssignableFrom(typeof(T)))
-            {
-                entity.IsDeleted = true;
-                _dbSet.Update(entity);
-            }
-            else
-                _dbSet.Remove(entity);
+            T entity = GetByIdAsNoTracking(id);
+            _dbSet.Remove(entity);
         }
     }
 }

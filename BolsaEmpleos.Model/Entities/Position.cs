@@ -13,7 +13,7 @@ namespace BolsaEmpleos.Model.Entities
         public string Name { get; set; }
         public string Location { get; set; }
         public string Description { get; set; }
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public int PosterId { get; set; }
         public virtual Category Category { get; set; }
         public virtual User Poster { get; set; }

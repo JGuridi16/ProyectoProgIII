@@ -24,10 +24,12 @@ namespace BolsaEmpleos.Model.Contexts
         {
             modelBuilder.Entity<ApplicantJob>()
                 .HasKey(ap => new { ap.ApplicantId, ap.PositionId});
+
             modelBuilder.Entity<ApplicantJob>()
                 .HasOne(ap => ap.Applicant)
                 .WithMany(x => x.ApplicantJobs)
                 .HasForeignKey(ap => ap.ApplicantId);
+
             modelBuilder.Entity<ApplicantJob>()
                 .HasOne(ap => ap.Position)
                 .WithMany(x => x.ApplicantJobs)

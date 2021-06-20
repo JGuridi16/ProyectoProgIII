@@ -55,16 +55,15 @@ namespace BolsaEmpleos.Model.Migrations
                     Name = table.Column<string>(nullable: true),
                     Location = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<string>(nullable: true),
-                    PosterId = table.Column<int>(nullable: false),
-                    CategoryId1 = table.Column<int>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: false),
+                    PosterId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Positions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Positions_Categories_CategoryId1",
-                        column: x => x.CategoryId1,
+                        name: "FK_Positions_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -106,9 +105,9 @@ namespace BolsaEmpleos.Model.Migrations
                 column: "PositionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Positions_CategoryId1",
+                name: "IX_Positions_CategoryId",
                 table: "Positions",
-                column: "CategoryId1");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Positions_PosterId",

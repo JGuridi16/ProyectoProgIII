@@ -24,30 +24,30 @@ namespace BolsaEmpleos.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get([FromRoute] int id)
+        public IActionResult GetById([FromRoute] int id)
         {
             var position = _service.GetOne(id);
             return Ok(position);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Position position)
+        public async Task<IActionResult> Post([FromBody] Position position)
         {
-            var entity = _service.Save(position);
+            var entity = await _service.Save(position);
             return Ok(entity);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromRoute] int id, [FromBody] Position position)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] Position position)
         {
-            var entity = _service.Update(id, position);
+            var entity = await _service.Update(id, position);
             return Ok(entity);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var entity = _service.Delete(id);
+            var entity = await _service.Delete(id);
             return Ok(entity);
         }
     }
