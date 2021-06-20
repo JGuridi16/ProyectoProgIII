@@ -27,7 +27,6 @@ namespace BolsaEmpleos.Model.IoC
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IAplicantRepository, AplicantRepository>();
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

@@ -10,7 +10,6 @@ namespace BolsaEmpleos.Services.IoC
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPositionService, PositionService>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IAplicantService, AplicantService>();
         }
     }
 }

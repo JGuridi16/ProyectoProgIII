@@ -1,5 +1,6 @@
 ﻿using BolsaEmpleos.Model.Base;
 using BolsaEmpleos.Model.Enums;
+using System.Collections.Generic;
 
 namespace BolsaEmpleos.Model.Entities
 {
@@ -11,8 +12,11 @@ namespace BolsaEmpleos.Model.Entities
         public string Url { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public string CategoryId { get; set; }
-        public virtual int Category { get; set; }
         public string Description { get; set; }
+        public string CategoryId { get; set; }
+        public int PosterId { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual User Poster { get; set; }
+        public ICollection<ApplicantJob> ApplicantJobs { get; set; }
     }
 }
