@@ -24,9 +24,9 @@ namespace BolsaEmpleos.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        public IActionResult Get([FromRoute] int id)
         {
-            var position = await _service.GetOne(id);
+            var position = _service.GetOne(id);
             return Ok(position);
         }
 
