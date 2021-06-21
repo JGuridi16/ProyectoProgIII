@@ -1,5 +1,6 @@
 using BolsaEmpleos.Model.IoC;
 using BolsaEmpleos.Services.IoC;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,9 +29,34 @@ namespace BolsaEmpleos.Api
             services.AddServices(Configuration);
             #endregion
 
+            #region CORS
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllPolicy",
+                      builder => builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .SetIsOriginAllowed(x => true)
+                      );
+            });
+            
+            #endregion
+
             #region Adding External Libraries
 
+            services
+                .AddAuthentication(options => options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => options.LoginPath = "/api/user/google-login")
+                .AddGoogle(options =>
+                {
+                    options.ClientId = Configuration.GetSection("GoogleOAuth:ClientId")?.Value;
+                    options.ClientSecret = Configuration.GetSection("GoogleOAuth:ClientSecret")?.Value;
+                });
+
             services.AddSwaggerGen();
+            
             #endregion
         }
 
@@ -52,6 +78,8 @@ namespace BolsaEmpleos.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

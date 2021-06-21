@@ -1,5 +1,6 @@
 ﻿using BolsaEmpleos.Model.Entities;
 using BolsaEmpleos.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ namespace BolsaEmpleos.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _service;
