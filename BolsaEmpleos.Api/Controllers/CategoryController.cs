@@ -42,6 +42,7 @@ namespace BolsaEmpleos.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromRoute] int id, [FromBody] Category category)
         {
+            category.Id = id;
             var entity = await _service.Update(id, category);
             return Ok(entity);
         }

@@ -83,6 +83,8 @@ namespace BolsaEmpleos.Api
 
             app.UseAuthorization();
 
+            //app.UseStaticFiles();
+
             app.UseCors("AllowAllPolicy");
 
             app.UseEndpoints(endpoints =>

@@ -10,7 +10,7 @@ namespace BolsaEmpleos.Model.Repositories
     public class Repository<T> : IRepository<T> where T : class, IBaseEntity
     {
         private readonly DbFactory _dbFactory;
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         public Repository(DbFactory dbFactory)
         {
@@ -66,6 +66,21 @@ namespace BolsaEmpleos.Model.Repositories
                 return list;
 
             return list.Where(predicate);
+        }
+
+        public bool Any(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> list = _dbSet.AsQueryable();
+
+            foreach (var includeProperty in includeProperties)
+            {
+                list = list.Include(includeProperty);
+            }
+
+            if (predicate is null)
+                return false;
+
+            return list.Any(predicate);
         }
 
         public void Add(T entity)

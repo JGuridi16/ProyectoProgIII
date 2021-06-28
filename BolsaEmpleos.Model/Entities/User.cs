@@ -12,6 +12,7 @@ namespace BolsaEmpleos.Model.Entities
         public string Email { get; set; }
         public Role Role { get; set; }
         public string DocumentUrl { get; set; }
+        public bool IsActive { get; set; }
         public ICollection<ApplicantJob> ApplicantJobs { get; set; }
     }
 }

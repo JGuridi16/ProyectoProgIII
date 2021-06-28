@@ -4,8 +4,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using Microsoft.AspNetCore.StaticFiles;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace BolsaEmpleos.Api.Controllers
@@ -16,10 +20,12 @@ namespace BolsaEmpleos.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
+        private readonly IWebHostEnvironment _env;
 
-        public UserController(IUserService service)
+        public UserController(IUserService service, IWebHostEnvironment env)
         {
             _service = service;
+            _env = env;
         }
 
         [AllowAnonymous]
@@ -35,20 +41,51 @@ namespace BolsaEmpleos.Api.Controllers
         public async Task<IActionResult> GoogleResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var user = await _service.GetAndCreateCurrentUserIfNoExist(result);
 
-            var claims = result.Principal.Identities
-                .FirstOrDefault()
-                .Claims
-                .Select(claim => new
-                {
-                    claim.Issuer,
-                    claim.OriginalIssuer,
-                    claim.Type,
-                    claim.Value
-                }).ToList();
+            if (user is null)
+                return Unauthorized();
 
-            var x =new JsonResult(claims);
-            return x;
+            return Ok(user);
+        }
+
+        [HttpPost("{userId}/[action]")]
+        public async Task<IActionResult> UploadDocument([FromRoute] int userId, IFormFile file)
+        {
+            if (file is null)
+                return BadRequest("File cannot be null");
+
+            var savedFile = await _service.SaveFileAsync(file, _env, userId);
+
+            if (!savedFile.IsValid && savedFile.Filename is null)
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+
+            else if (!savedFile.IsValid)
+                return BadRequest(savedFile.Errors);
+
+            else
+                return Ok(savedFile);
+        }
+
+        [HttpGet("[action]/{filename}")]
+        public async Task<IActionResult> DownloadDocument([FromRoute] string filename)
+        {
+            if (filename is null)
+                return NotFound();
+
+            var provider = new FileExtensionContentTypeProvider();
+            var filePath = Path.Combine(_env.ContentRootPath, "wwwroot", "uploads", filename);
+
+            bool isPdf = provider.TryGetContentType(filePath, out string contentType);
+
+            if (!isPdf) contentType = "application/octet-stream";
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+
+            return File(bytes, contentType, filename);
         }
 
         #region CRUD Methods
@@ -66,16 +103,11 @@ namespace BolsaEmpleos.Api.Controllers
             var user = _service.GetOne(id);
             return Ok(user);
         }
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] User user)
-        {
-            var entity = await _service.Save(user);
-            return Ok(entity);
-        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromRoute] int id, [FromBody] User user)
         {
+            user.Id = id;
             var entity = await _service.Update(id, user);
             return Ok(entity);
         }

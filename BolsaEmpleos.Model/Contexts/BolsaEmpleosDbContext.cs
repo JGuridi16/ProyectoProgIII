@@ -15,6 +15,7 @@ namespace BolsaEmpleos.Model.Contexts
         public DbSet<Position> Positions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ApplicantJob> ApplicantJobs { get; set; }
         
         #endregion
 

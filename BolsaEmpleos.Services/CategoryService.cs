@@ -48,26 +48,28 @@ namespace BolsaEmpleos.Services
 
         public async Task<Category> Update(int id, Category category)
         {
-            var entity = _repository.GetByIdAsNoTracking(id);
-            if (entity is null) return null;
+            var entityExists = _repository.Any(x => x.Id.Equals(id));
+
+            if (!entityExists) return null;
 
             _repository.Update(category);
 
             await _uow.CommitAsync();
 
-            return category;
+            return _repository.GetById(id);
         }
 
         public async Task<Category> Delete(int id)
         {
-            var entity = _repository.GetByIdAsNoTracking(id);
-            if (entity is null) return null;
+            var entityExists = _repository.Any(x => x.Id.Equals(id));
+
+            if (!entityExists) return null;
 
             _repository.Delete(id);
 
             await _uow.CommitAsync();
 
-            return entity;
+            return _repository.GetById(id);
         }
     }
 }
