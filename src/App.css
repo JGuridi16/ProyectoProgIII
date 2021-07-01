@@ -147,3 +147,10 @@ nav.navbar.navbar-expand.navbar-dark.bg-primary {
     display: inline-block;
     margin: 0 0.5em;
 }
+
+.space-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 5px;
+}
