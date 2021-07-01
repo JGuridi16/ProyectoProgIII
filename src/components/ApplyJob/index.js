@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import BaseListSelect from '../BaseSelect';
+import Image from 'react-bootstrap/Image';
 import { Form } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import Col from 'react-bootstrap/Col';
@@ -10,48 +10,23 @@ import DragDropFileInline from '../DragDropFileInLine';
 let yup = require('yup');
 
 
-const PostJob = () => {
-    const [categories, setCategories] = useState([
-        {
-            id : 1,
-            value: "Informatica"
-        },
-        {
-            id : 2,
-            value: "Ganaderia"
-        }
-    ]);
-    const [enterprises, setEnterprises] = useState([
-        {
-            id : 1,
-            value: "Solvex"
-        },
-        {
-            id : 2,
-            value: "Argentum"
-        },
-        {
-            id : 3,
-            value: "Claro"
-        },
-        {
-            id : 4,
-            value: "Altice"
-        }
-    ]);
+const PostJob = (props) => {
     const formRef = useRef();
     const [formikSchema, setFormikSchema] = useState({});
+    const [hasUrl, setHasUrl] = useState(true);
+    const [position, setPosition] = useState({
+        logo: 'https://i0.wp.com/hipertextual.com/wp-content/uploads/2019/05/hipertextual-avengers-endgame-futuro-capitan-america-2019781893-scaled.jpg?fit=1200%2C750&ssl=1',
+        company: 'Capitan Maricon',
+        description: 'El método find no transforma el array desde el cual es llamado, pero la función proporcionada en callback sí. En ese caso, los elementos procesados por find son establecidos antes de la primera invocación de callback. Por lo tanto:',
+        location: 'en mi casa',
+        url: 'www.facebook.com',
+        email: 'abreugabriel237@gmail.com'
+    });
     const [formContent, setFormContent] = useState({
-        postName: '',
-        postDescription: '',
-        categoryId: '',
-        enterpriseId: ''
+        file: ''
     });
     const [basicSchema, setBasicSchema] = useState({
-        postName: yup.string().required('El campo Nombre de Puesto es requerido'),
-        postDescription: yup.string().required('El campo Descripción de Puesto es requerido'),
-        categoryId: yup.string().required('El campo Categoria es requerido'),
-        enterpriseId: yup.string().required('El campo Empresa es requerido')
+        file: yup.string().required('Debe seleccionar un archivo'),
     });
     const updateFormik = (schema) => setFormikSchema(() => {
         return yup.object(schema);
@@ -59,11 +34,19 @@ const PostJob = () => {
     useEffect(() => {
         (async function mounted() {
             updateFormik(basicSchema);
+
         })();
     }, []);
     const onFormSubmitted = () => {
-        alert("Se guardo el puesto de trabajo categoria");
+        
     }
+
+    const openLink = (url) =>{
+        window.open(url, "_blank");
+    }
+
+    const [contractTypes, setContractTypes] = useState([]);
+
     const fileRef = useRef({});
     return (
             <>
@@ -87,105 +70,51 @@ const PostJob = () => {
                         <Form onSubmit={handleSubmit}>
                             <Card className="p-3 mb-4">
                                 <div className="mb-35 space-between-container">
-                                    <h2 className="is-bold">
-                                        Aplicar a puesto de trabajo
-                                    </h2>
+                                    <div className="mb-35 space-container">
+                                        <Image width="96" height="65" src={position.logo} rounded />
+                                        <h2 className="is-bold">
+                                            <b>{position.company}</b>
+                                        </h2>
+                                    </div>
+                                    <Form.Label> <b> Tipo de contrato: </b>  Klk </Form.Label>
                                 </div>
                                 <Card className="p-3 my-4">
                                     <Form.Row className="my-3">
-                                        <Form.Group as={Col} md="6" controlId="postName">
-                                            <Form.Label> <b> {position[company]} </b> </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                name="postName"
-                                                value={values.postName}
-                                                onChange={handleChange}
-                                                isValid={touched.postName && !errors.postName}
-                                                isInvalid={!!errors.postName}
-                                            />
-                                            <Form.Control.Feedback type="invalid">
-                                                {errors.postName}
-                                            </Form.Control.Feedback>
-                                        </Form.Group>
-                                        <BaseListSelect
-                                            values={values}
-                                            elements={categories}
-                                            name={"categoryId"}
-                                            handleChange={handleChange}
-                                            touched={touched}
-                                            errors={errors}
-                                            title="Categoria"
-                                            column={6}
-                                        />
                                     <Form.Group as={Col} md="12" controlId="postDescription">
-                                        <Form.Label> <b> Descripción del Puesto </b> </Form.Label>
-                                        <Form.Control
-                                            as="textarea"
-                                            name="postDescription"
-                                            value={values.postDescription}
-                                            onChange={handleChange}
-                                            isValid={touched.postDescription && !errors.postDescription}
-                                            isInvalid={!!errors.postDescription}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.postDescription}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Form.Group as={Col} md="12" controlId="howToApply">
-                                        <Form.Label> <b> Como aplicar </b> </Form.Label>
-                                        <Form.Control
-                                            as="textarea"
-                                            name="howToApply"
-                                            value={values.howToApply}
-                                            onChange={handleChange}
-                                            isValid={touched.howToApply && !errors.howToApply}
-                                            isInvalid={!!errors.howToApply}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.howToApply}
-                                        </Form.Control.Feedback>
+                                        
+                                        <Form.Label>
+                                                <b> Descripcion de Puesto </b>
+                                        </Form.Label>
+                                        <p> {position.description} </p>
+                                        
+                                        <Form.Label>
+                                                <b> Ubicación </b>
+                                            </Form.Label>
+                                        <p> {position.location} </p>
+                                        <Form.Label>
+                                                <b> Como Aplicar </b>
+                                            </Form.Label>
+                                                <p> 
+                                                    Enviar un correo directo a {position.email} o entre la pagina web: <a onClick={() => openLink(position.url) }>Click Aqui</a>
+                                                </p>
+                                                
+                                            
                                     </Form.Group>
                                     </Form.Row>
                                 </Card>
                                 <Card className="p-3 my-4">
                                     <Form.Row className="my-3">
-                                    <Form.Group as={Col} md="6" controlId="companyName">
-                                        <Form.Label> <b> Nombre de la Compañía * </b> </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="companyName"
-                                            value={values.companyName}
-                                            onChange={handleChange}
-                                            isValid={touched.companyName && !errors.companyName}
-                                            isInvalid={!!errors.companyName}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.companyName}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                    
-                                    <BaseListSelect
-                                        values={values}
-                                        elements={enterprises}
-                                        name={"companyType"}
-                                        handleChange={handleChange}
-                                        touched={touched}
-                                        errors={errors}
-                                        title="Tipo de Compañia"
-                                        column={6}
-                                    />
-
                                     <Form.Group
                                             as={Col}
                                             md={6}
-                                            controlId="companyLogo"
+                                            controlId="file"
                                         >
                                             <Form.Label>
-                                                <b> Logo </b>
+                                                <b> Añadir Curriculum Vitae </b>
                                             </Form.Label>
                                             <DragDropFileInline
-                                                id="companyLogo"
-                                                name="companyLogo"
+                                                id="file"
+                                                name="file"
                                                 innerRef={fileRef}
                                                 errors={errors}
                                                 touched={touched}
@@ -193,50 +122,7 @@ const PostJob = () => {
                                             />
                                     </Form.Group>
 
-                                    <Form.Group as={Col} md="6" controlId="companyUrl">
-                                        <Form.Label> <b> Pagina Web </b> </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="companyUrl"
-                                            value={values.companyUrl}
-                                            onChange={handleChange}
-                                            isValid={touched.companyUrl && !errors.companyUrl}
-                                            isInvalid={!!errors.companyUrl}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.companyUrl}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} md="6" controlId="companyLocation">
-                                        <Form.Label> <b> Ubicacion </b> </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="companyLocation"
-                                            value={values.companyLocation}
-                                            onChange={handleChange}
-                                            isValid={touched.companyLocation && !errors.companyLocation}
-                                            isInvalid={!!errors.companyLocation}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.companyLocation}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} md="6" controlId="userEmail">
-                                        <Form.Label> <b> Email </b> </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="userEmail"
-                                            value={values.userEmail}
-                                            onChange={handleChange}
-                                            isValid={touched.userEmail && !errors.userEmail}
-                                            isInvalid={!!errors.userEmail}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.userEmail}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
+                                    
                                     </Form.Row>
                                 </Card>
                                 <Form.Group className="my-3 d-flex justify-content-end align-items-end" as={Col} md="12">

@@ -2,34 +2,33 @@ import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navbar, Nav, Form } from 'react-bootstrap';
 import UserDropdown from '../../components/UserDropDown';
-import { isMobile } from "react-device-detect";
-import { ToastContainer, toast } from 'react-toastify';
+import { isBrowser, isMobile } from "react-device-detect";
 
 const navLinkStyle = {
     color: 'white',
     textDecoration: 'none'
-};
+}
 
 const activeLinkStyle = {
     fontWeight: 'bold'
-};
+}
 
 const HuStyle = {
-
-};
+    marginTop: 10,
+}
 
 const marginLeft = {
     marginLeft: 150
-};
+}
 
 const bardsStyle = {
     color: 'white'
-};
+}
 
 const browserBarsStyle = {
     ...marginLeft,
     ...bardsStyle
-};
+}
 
 const whiteWords = {
     color: 'white'
@@ -46,17 +45,12 @@ const activeNavLinkStyle = {
 
 const Header = ({ toggleSidebar, opeationSuccess }) => {
 
-    useEffect(() => {
-        
-    }, [opeationSuccess]);
-
     return (
         <>
-            <ToastContainer />
             <Navbar bg="primary" variant="dark">
                 <Nav className="mr-auto">
                     <div style={HuStyle}>
-                        <NavLink className="mr-1 navlink"
+                        <NavLink className="mr-3"
                             to="/"
                             exact
                             style={navLinkStyle}
@@ -65,22 +59,14 @@ const Header = ({ toggleSidebar, opeationSuccess }) => {
                             Inicio
                         </NavLink>
                     </div>
-
-
                 </Nav>
-                <Form inline>
-                    {
-                        isMobile &&
-                        <Nav.Link style={bardsStyle} onClick={toggleSidebar}>
-                            <i className="fa fa-bars"></i>
-                        </Nav.Link>
-                    }
-                    <UserDropdown />
-                </Form>
             </Navbar>
+            <Form inline>
+                <UserDropdown />
+            </Form>
         </>
-    );
-};
+    )
+}
 
 
 export default Header;
