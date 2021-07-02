@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import Col from 'react-bootstrap/Col';
 import DragDropFileInline from '../DragDropFileInLine'; 
+import { get } from '../../services';
 
 let yup = require('yup');
 

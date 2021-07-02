@@ -1,18 +1,17 @@
 import axios from 'axios';
-import { tokenStorage } from 'localStorage';
-import { XmlState } from 'xmlStates';
-import { StatusCode } from 'statusCode';
+// import { tokenStorage } from 'localStorage';
+// import { XmlState } from 'xmlStates';
+// import { StatusCode } from 'statusCode';
 
-import { CONTENT_TYPE_MULTIPART_FORM_DATA, CONTENT_TYPE_JSON, ALL_METHODS, ALL_HEADERS, ANY_ORIGIN } from '../globalConsts';
 
 
 const baseURL = 'https://localhost:44356/api';
 const baseARSURL = '';
 
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = ANY_ORIGIN;
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = ANY_ORIGIN;
 const get = async (endpoint) => {
-    addToken();
-    return axios.get(`${baseURL}/${endpoint}`);
+    // addToken();
+    return await axios.get(`${baseURL}/${endpoint}`);
 };
 
 const getAnonymous = async (endpoint) => {
@@ -23,30 +22,8 @@ const patch = async (endpoint) => {
     return axios.patch(`${baseURL}/${endpoint}`);
 };
 
-const getGeneric = (endpoint) => {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XmlState.DONE) {
-                if (xhr.status === StatusCode.OK) {
-                    resolve(xhr.response);
-                } else {
-                    reject(xhr.response);
-                }
-            }
-        };
 
-        xhr.open('GET', endpoint);
-        xhr.setRequestHeader("Access-Control-Allow-Methods", ALL_METHODS);
-        xhr.setRequestHeader("Access-Control-Allow-Headers", ALL_HEADERS);
-        xhr.setRequestHeader('Access-Control-Allow-Origin', ANY_ORIGIN);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send();
-
-    });
-};
-
-const donwload = async (id, action = 'download', blank = true) => {
+const download = async (id, action = 'download', blank = true) => {
     const target = (blank) ? '_blank' : undefined;
     const url = await axios.get(`${baseURL}/files/${action}?documentId=${id}`);
     return window.open(url.config.url, target);
@@ -67,7 +44,7 @@ const putDocument = async (endpoint, id, statusId) => {
 const putFiles = async (endpoint, data) => {
     let axiosConfig = {
         headers: {
-            ...CONTENT_TYPE_JSON
+            // ...CONTENT_TYPE_JSON
         }
     };
     return axios.put(`${baseURL}/${endpoint}`, data, axiosConfig);
@@ -76,7 +53,7 @@ const putFiles = async (endpoint, data) => {
 const postFile = async (file) => {
     let axiosConfig = {
         headers: {
-            ...CONTENT_TYPE_JSON
+            // ...CONTENT_TYPE_JSON
         }
     };
     const data = new FormData();
@@ -93,7 +70,7 @@ const uploadMany = async (files) => {
     const data = new FormData();
     let axiosConfig = {
         headers: {
-            ...CONTENT_TYPE_MULTIPART_FORM_DATA
+            // ...CONTENT_TYPE_MULTIPART_FORM_DATA
         }
     };
     for (let index = 0; index < files.length; index++) {
@@ -111,23 +88,23 @@ const postARS = async (endpoint, data) => {
     return axios.post(`${baseARSURL}/${endpoint}`, data);
 };
 
-const addToken = () => {
-    const tokenLocalStorage = tokenStorage.getString();
-    if (tokenLocalStorage) {
-        axios.interceptors.request.use(
-            (config) => {
-                const token = `Bearer ${tokenLocalStorage}`;
-                if (token) {
-                    config.headers['Authorization'] = token;
-                    config.headers.common['Authorization'] = token;
-                }
-                return config;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
-    }
-};
+// const addToken = () => {
+//     const tokenLocalStorage = tokenStorage.getString();
+//     if (tokenLocalStorage) {
+//         axios.interceptors.request.use(
+//             (config) => {
+//                 const token = `Bearer ${tokenLocalStorage}`;
+//                 if (token) {
+//                     config.headers['Authorization'] = token;
+//                     config.headers.common['Authorization'] = token;
+//                 }
+//                 return config;
+//             },
+//             (error) => {
+//                 return Promise.reject(error);
+//             }
+//         );
+//     }
+// };
 
-export { get, post, put, onDelete, postARS, addToken, updateMany, uploadMany, putFiles, getAnonymous, getGeneric, patch, postFile, putDocument, donwload };
+export { get, post, put, onDelete, postARS, updateMany, uploadMany, putFiles, getAnonymous, patch, postFile, putDocument, download };
