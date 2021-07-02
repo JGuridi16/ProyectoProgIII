@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import Col from 'react-bootstrap/Col';
 import DragDropFileInline from '../DragDropFileInLine'; 
+import { get } from '../../services';
 
 let yup = require('yup');
 
@@ -33,8 +34,9 @@ const PostJob = (props) => {
     });
     useEffect(() => {
         (async function mounted() {
+            let response = await get('api/Position/'+ props.id);
+            setPosition(response.Data);
             updateFormik(basicSchema);
-
         })();
     }, []);
     const onFormSubmitted = () => {
