@@ -3,13 +3,31 @@ import { NavLink } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import { get } from '../../services';
 import Form from 'react-bootstrap/Form';
-import Label from 'react-bootstrap/Label';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
 const MainPage = (props) => {
-    const [data, setData] = useState([]);
-    const [position, setPosition] = useState({});
+    const [pay, setPay] = useState([])
+    const [position, setPosition] = useState({
+        company: 'Solvex',
+        name: 'Desarrollador',
+        aplicanJobs: [
+            {
+                applicant: {
+                    name: 'Juanito',
+                    lastName: 'Gonza',
+                    documentUrl: 'https://google.com'
+                }
+            },
+            {
+                applicant: {
+                    name: 'Pedrito',
+                    lastName: 'Abinadel',
+                    documentUrl: 'https://facebook.com'
+                }
+            }
+        ]
+    });
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -17,6 +35,7 @@ const MainPage = (props) => {
         Promise.all([
             get('Position')
         ]).then(([resPosition]) => {
+            console.log(position.length)
             setPosition(resPosition.data);
             setIsLoading(false);
         });
@@ -31,10 +50,10 @@ const MainPage = (props) => {
                     <Card className="p-2 my-8">
                         <Card>
                             <Form.Row>
-                                <Label>{position.company}</Label>
+                                <Form.Label>{position.company}</Form.Label>
                             </Form.Row>
                             <Form.Row>
-                                <Label>{position.name}</Label>
+                                <Form.Label>{position.name}</Form.Label>
                             </Form.Row>
                         </Card>
                         <Table>
@@ -45,7 +64,7 @@ const MainPage = (props) => {
                                 </tr>
                             </thead>
                             {
-                                data.length &&
+                                position.aplicanJobs.length &&
                                 <>
                                     <tbody>
                                         {
