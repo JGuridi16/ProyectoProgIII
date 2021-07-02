@@ -53,7 +53,7 @@ const MainPage = (props) => {
                                             <NavLink
                                                 to={applicant.applicant.documentUrl}
                                             >
-                                                <Button variant="info" onClick={} size="sm">Ver aplicantes</Button>{' '}
+                                                <Button variant="info" size="sm">Ver aplicantes</Button>{' '}
                                             </NavLink>
                                         </td>
                                     </tr>
