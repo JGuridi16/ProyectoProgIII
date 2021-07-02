@@ -21,7 +21,7 @@ namespace BolsaEmpleos.Services
         Task<IEnumerable<User>> GetAll();
         User GetOne(int id);
         Task<FileValidatorResult> SaveFileAsync(IFormFile file, IWebHostEnvironment env, int userId);
-        Task<User> GetAndCreateCurrentUserIfNoExist(AuthenticateResult result);
+        Task<User> GetAndCreateCurrentUserIfNoExist(User user);
         Task<User> Save(User user);
         Task<User> Update(int id, User user);
         Task<User> Delete(int id);
@@ -38,38 +38,23 @@ namespace BolsaEmpleos.Services
             _repository = repository;
         }
 
-        public async Task<User> GetAndCreateCurrentUserIfNoExist(AuthenticateResult authenticateResult)
+        public async Task<User> GetAndCreateCurrentUserIfNoExist(User user)
         {
-            var claims = authenticateResult.Principal.Identities
-                .FirstOrDefault()
-                .Claims
-                .Select(claim => new
-                {
-                    claim.Issuer,
-                    claim.OriginalIssuer,
-                    claim.Type,
-                    claim.Value
-                })
-                .ToList();
-
-            if (claims[0]?.Value is null) return null;
-
-            string objectId = claims[0].Value;
-            var userCreated = await _repository.GetUserByObjectIdAsync(objectId);
+            var userCreated = await _repository.GetUserByObjectIdAsync(user.ObjectIdentifier);
 
             if (userCreated is null)
             {
-                var user = new User()
+                var newUser = new User()
                 {
-                    ObjectIdentifier = objectId,
-                    Name = claims[2].Value,
-                    Lastname = claims[3].Value,
-                    Email = claims[4].Value,
+                    ObjectIdentifier = user.ObjectIdentifier,
+                    Name = user.Name,
+                    Lastname = user.Lastname,
+                    Email = user.Email,
                     Role = Role.USER,
                     IsActive = true
                 };
 
-                await Save(user);
+                await Save(newUser);
             }
             else if (!userCreated.IsActive)
                 return null;

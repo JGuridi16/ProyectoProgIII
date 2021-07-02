@@ -38,12 +38,14 @@ namespace BolsaEmpleos.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("google-response")]
-        public async Task<IActionResult> GoogleResponse()
+        public async Task<IActionResult> GoogleResponse([FromBody] User user)
         {
-            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var user = await _service.GetAndCreateCurrentUserIfNoExist(result);
+            if (user is null) 
+                return Unauthorized();
+            
+            var userCreated = await _service.GetAndCreateCurrentUserIfNoExist(user);
 
-            if (user is null)
+            if (userCreated is null)
                 return Unauthorized();
 
             return Ok(user);
