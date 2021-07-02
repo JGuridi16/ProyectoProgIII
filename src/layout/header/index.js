@@ -47,9 +47,9 @@ const Header = ({ toggleSidebar, opeationSuccess }) => {
 
     return (
         <>
-            <Navbar bg="primary" variant="dark">
+            <Navbar bg="primary" variant="dark" className="px-4">
                 <Nav className="mr-auto">
-                    <div style={HuStyle}>
+                    <div style={HuStyle}> 
                         <NavLink className="mr-3"
                             to="/"
                             exact
