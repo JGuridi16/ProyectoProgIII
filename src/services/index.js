@@ -100,4 +100,4 @@ const postARS = async (endpoint, data) => {
 //     }
 // };
 
-export { get, post, put, onDelete, postARS, updateMany, uploadMany, putFiles, getAnonymous, patch, postFile, putDocument, download };
+export { get, post, put, onDelete, postARS, updateMany, uploadMany, putFiles, getAnonymous, patch, postFile, putDocument, download, baseURL };

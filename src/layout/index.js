@@ -89,7 +89,7 @@ class Layout extends React.Component {
 
                 </aside>
                 <div className="App">
-                    <Header toggleSidebar={this.handleDrawer} />
+                    <Header setIsLoggedIn={this.props.setIsLoggedIn} isLoggedIn={this.props.isLoggedIn} toggleSidebar={this.handleDrawer} />
                     
                     <main className={mainClass.join(' ')}>
                         {this.props.loading && (
