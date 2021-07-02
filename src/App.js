@@ -44,8 +44,10 @@ const App = () => {
     "objectIdentifier": profile.LS,
     "name": profile.uU,
     "lastname": profile.qS,
-    "email": profile.Nt})
-    setUser(newUser)
+    "email": profile.Nt}).then(() => {
+      setUser(newUser)
+      console.log(user)
+    });
   }
 
   const handleSignIn = async () => {

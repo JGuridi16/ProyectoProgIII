@@ -108,7 +108,7 @@ class Layout extends React.Component {
                                 />
                             </div>
                         )}
-                        <Router />
+                        <Router user={this.props.user}/>
                     </main>
                 </div>
             </>
