@@ -2,9 +2,11 @@ import React from 'react';
 import ApplyJob from '../../components/ApplyJob';
 
 
-const ApplyJobView = () => {
+const ApplyJobView = (props) => {
     return (
-        <ApplyJob/>
+        <ApplyJob
+        id = {props.match.params.id}
+        />
     );
 };
 

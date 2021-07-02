@@ -3,24 +3,9 @@ import { Table } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from "react-router-dom";
 
-const BaseTable = () => {
+const BaseTable = ({data}) => {
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState([
-        {
-            position: 'Gerente',
-            enterprise: 'Altice',
-            location: '27 febrero SD DN'
-        }
-    ]);
-
-    useEffect(() => {
-        (async function mounted() {
-
-        })();
-        return function cleanup() {
-        };
-    }, [])
 
     return (
         <>
@@ -34,18 +19,17 @@ const BaseTable = () => {
                     </tr>
                 </thead>
                 {
-                    setData.length > 0 &&
                     <>
                         <tbody>
                             {
                                 data.map((job, index) =>
                                     <tr key={index}>
-                                        <td>{job.position}</td>
-                                        <td>{job.enterprise}</td>
+                                        <td>{job.name}</td>
+                                        <td>{job.company}</td>
                                         <td>{job.location}</td>
                                         <td>
                                             <Button className="bg-danger text-white" size="sm" 
-                                            onClick={() => history.push("/applyjob")}>
+                                            onClick={() => history.push("/applyjob/" + job.id)}>
                                                 Aplicar</Button>
                                         </td>
                                     </tr>

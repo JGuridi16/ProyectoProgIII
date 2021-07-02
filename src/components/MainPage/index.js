@@ -2,22 +2,38 @@ import React, { useEffect, useState, useRef } from 'react';
 import BaseTable from '../BaseTable';
 import Card from 'react-bootstrap/Card';
 import BaseListSelect from '../BaseSelect';
+import { get } from '../../services';
 
 const MainPage = (props) => {
-    const today = new Date();
-    const [categories, setCategories] = useState([
-        {
-            id : 1,
-            value: "Informatica"
-        },
-        {
-            id : 2,
-            value: "Ganaderia"
+    
+    const [data, setData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]); 
+    const [categories, setCategories] = useState([]);
+    const onSelectChanged = (event) => {
+        if(event.target.value){
+            setFilteredData(data.filter(x => x.categoryId === Number(event.target.value)));
         }
-    ]);
-    const onSelectChanged = () => {
-        alert("Se cambio a la categoria");
+        else{
+            setFilteredData(data);
+        }
+        
     }
+
+    useEffect(() => {
+        (async function mounted() {
+         var response = await get('Category');
+         setCategories(response.data);
+         var response2 = await get('Position');
+         setData(response2.data);
+        })();
+        return function cleanup() {
+        };
+    }, [])
+
+    useEffect(() => {
+        setFilteredData(data);
+    }, [data])
+
     return (
       <div>
         <Card className="p-3 my-4">
@@ -35,7 +51,9 @@ const MainPage = (props) => {
                         column={3}
                     />
                 </div>
-                <BaseTable/>
+                <BaseTable
+                data = {filteredData}
+                />
             </Card>
         </Card>
       </div>

@@ -11,7 +11,7 @@ import { get } from '../../services';
 let yup = require('yup');
 
 
-const PostJob = (props) => {
+const PostJob = ({id}) => {
     const formRef = useRef();
     const [formikSchema, setFormikSchema] = useState({});
     const [hasUrl, setHasUrl] = useState(true);
@@ -21,7 +21,7 @@ const PostJob = (props) => {
         description: 'El método find no transforma el array desde el cual es llamado, pero la función proporcionada en callback sí. En ese caso, los elementos procesados por find son establecidos antes de la primera invocación de callback. Por lo tanto:',
         location: 'en mi casa',
         url: 'www.facebook.com',
-        email: 'abreugabriel237@gmail.com'
+        companyEmail: 'abreugabriel237@gmail.com'
     });
     const [formContent, setFormContent] = useState({
         file: ''
@@ -34,8 +34,8 @@ const PostJob = (props) => {
     });
     useEffect(() => {
         (async function mounted() {
-            let response = await get('api/Position/'+ props.id);
-            setPosition(response.Data);
+            let response = await get('Position/'+ id);
+            setPosition(response.data);
             updateFormik(basicSchema);
         })();
     }, []);
@@ -78,7 +78,6 @@ const PostJob = (props) => {
                                             <b>{position.company}</b>
                                         </h2>
                                     </div>
-                                    <Form.Label> <b> Tipo de contrato: </b>  Klk </Form.Label>
                                 </div>
                                 <Card className="p-3 my-4">
                                     <Form.Row className="my-3">
@@ -97,7 +96,7 @@ const PostJob = (props) => {
                                                 <b> Como Aplicar </b>
                                             </Form.Label>
                                                 <p> 
-                                                    Enviar un correo directo a {position.email} o entre la pagina web: <a onClick={() => openLink(position.url) }>Click Aqui</a>
+                                                    Enviar un correo directo a {position.companyEmail} o entre la pagina web: <a href= { "https://" + position.url}>Click Aqui</a>
                                                 </p>
                                                 
                                             

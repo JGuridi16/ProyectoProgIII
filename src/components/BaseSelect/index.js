@@ -30,7 +30,7 @@ const BaseListSelect = ({ column, defaults = { show: true, value: '', display: '
                                 key={element.id}
                                 value={element.id}
                             >
-                                {element.value}
+                                {element.name}
                             </option>
                         )
                     )}

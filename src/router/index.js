@@ -9,7 +9,7 @@ const Router = () => {
         <Switch>
             <Route path="/" exact component={HomeView} />
             <Route path="/PostJob" exact component={PostJobView} />
-            <Route path="/ApplyJob" exact component={ApplyJobView} />
+            <Route exact path="/applyjob/:id" exact component={ApplyJobView} />
         </Switch>
     );
 };

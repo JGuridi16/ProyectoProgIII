@@ -5,22 +5,16 @@ import BaseListSelect from '../BaseSelect';
 import { Form } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import Col from 'react-bootstrap/Col';
-import DragDropFileInline from '../DragDropFileInLine'; 
+import { useHistory } from "react-router-dom";
+import { get, post} from '../../services';
 
 let yup = require('yup');
 
 
 const PostJob = () => {
-    const [categories, setCategories] = useState([
-        {
-            id : 1,
-            value: "Informatica"
-        },
-        {
-            id : 2,
-            value: "Ganaderia"
-        }
-    ]);
+    
+    const history = useHistory();
+    const [categories, setCategories] = useState([]);
     const [enterprises, setEnterprises] = useState([
         {
             id : 1,
@@ -42,29 +36,49 @@ const PostJob = () => {
     const formRef = useRef();
     const [formikSchema, setFormikSchema] = useState({});
     const [formContent, setFormContent] = useState({
-        postName: '',
-        postDescription: '',
+        name: '',
         categoryId: '',
-        enterpriseId: ''
+        description: '',
+        company: '',
+        contractType: 1,
+        logo: '',
+        url: '',
+        location: '',
+        companyEmail: '',
+        posterId: 1
     });
     const [basicSchema, setBasicSchema] = useState({
-        postName: yup.string().required('El campo Nombre de Puesto es requerido'),
-        postDescription: yup.string().required('El campo Descripción de Puesto es requerido'),
-        categoryId: yup.string().required('El campo Categoria es requerido'),
-        enterpriseId: yup.string().required('El campo Empresa es requerido')
+        name: yup.string().required('El campo Nombre de Puesto es requerido'),
+        categoryId: yup.number().required('El campo Categoria es requerido'),
+        description: yup.string().required('El campo Descripcion es requerido'),
+        company: yup.string().required('El campo Nombre de Compañia es requerido'),
+        //companyType: yup.number().required('El campo Tipo de Empresa es requerido'),
+        logo: yup.string().required('El campo Logo es requerido'),
+        location: yup.string().required('El campo Ubicacion es requerido'),
+        companyEmail: yup.string().required('El campo Correo Electronico es requerido')
     });
     const updateFormik = (schema) => setFormikSchema(() => {
         return yup.object(schema);
     });
     useEffect(() => {
         (async function mounted() {
+            var response = await get('Category');
+            setCategories(response.data);
             updateFormik(basicSchema);
         })();
     }, []);
-    const onFormSubmitted = () => {
-        alert("Se guardo el puesto de trabajo categoria");
+    const onFormSubmitted = async (values) => {
+        console.log(JSON.stringify(values));
+        castProperties(values);
+        await post('Position',values);
+        history.push('/');
     }
-    const fileRef = useRef({});
+
+    const castProperties = (values) => {
+        values.categoryId = Number(values.categoryId);
+        values.posterId = 1;
+        values.contractType = Number(values.contractType);
+    }
     return (
             <>
                 <Formik
@@ -82,7 +96,6 @@ const PostJob = () => {
                         values,
                         touched,
                         errors,
-                        setFieldValue
                     }) => (
                         <Form onSubmit={handleSubmit}>
                             <Card className="p-3 mb-4">
@@ -93,15 +106,15 @@ const PostJob = () => {
                                 </div>
                                 <Card className="p-3 my-4">
                                     <Form.Row className="my-3">
-                                        <Form.Group as={Col} md="6" controlId="postName">
+                                        <Form.Group as={Col} md="6" controlId="name">
                                             <Form.Label> <b> Nombre del Puesto </b> </Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                name="postName"
-                                                value={values.postName}
+                                                name="name"
+                                                value={values.name}
                                                 onChange={handleChange}
-                                                isValid={touched.postName && !errors.postName}
-                                                isInvalid={!!errors.postName}
+                                                isValid={touched.name && !errors.name}
+                                                isInvalid={!!errors.name}
                                             />
                                             <Form.Control.Feedback type="invalid">
                                                 {errors.postName}
@@ -117,57 +130,43 @@ const PostJob = () => {
                                             title="Categoria"
                                             column={6}
                                         />
-                                    <Form.Group as={Col} md="12" controlId="postDescription">
+                                    <Form.Group as={Col} md="12" controlId="description">
                                         <Form.Label> <b> Descripción del Puesto </b> </Form.Label>
                                         <Form.Control
                                             as="textarea"
-                                            name="postDescription"
-                                            value={values.postDescription}
+                                            name="description"
+                                            value={values.description}
                                             onChange={handleChange}
-                                            isValid={touched.postDescription && !errors.postDescription}
-                                            isInvalid={!!errors.postDescription}
+                                            isValid={touched.description && !errors.description}
+                                            isInvalid={!!errors.description}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.postDescription}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Form.Group as={Col} md="12" controlId="howToApply">
-                                        <Form.Label> <b> Como aplicar </b> </Form.Label>
-                                        <Form.Control
-                                            as="textarea"
-                                            name="howToApply"
-                                            value={values.howToApply}
-                                            onChange={handleChange}
-                                            isValid={touched.howToApply && !errors.howToApply}
-                                            isInvalid={!!errors.howToApply}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.howToApply}
+                                            {errors.description}
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     </Form.Row>
                                 </Card>
                                 <Card className="p-3 my-4">
                                     <Form.Row className="my-3">
-                                    <Form.Group as={Col} md="6" controlId="companyName">
+                                    <Form.Group as={Col} md="6" controlId="company">
                                         <Form.Label> <b> Nombre de la Compañía * </b> </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            name="companyName"
-                                            value={values.companyName}
+                                            name="company"
+                                            value={values.company}
                                             onChange={handleChange}
-                                            isValid={touched.companyName && !errors.companyName}
-                                            isInvalid={!!errors.companyName}
+                                            isValid={touched.company && !errors.company}
+                                            isInvalid={!!errors.company}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.companyName}
+                                            {errors.company}
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     
                                     <BaseListSelect
                                         values={values}
                                         elements={enterprises}
-                                        name={"companyType"}
+                                        name={"contractType"}
                                         handleChange={handleChange}
                                         touched={touched}
                                         errors={errors}
@@ -178,63 +177,63 @@ const PostJob = () => {
                                     <Form.Group
                                             as={Col}
                                             md={6}
-                                            controlId="companyLogo"
+                                            controlId="logo"
                                         >
                                             <Form.Label>
-                                                <b> Logo </b>
+                                                <b> Logo (URL) </b>
                                             </Form.Label>
-                                            <DragDropFileInline
-                                                id="companyLogo"
-                                                name="companyLogo"
-                                                innerRef={fileRef}
-                                                errors={errors}
-                                                touched={touched}
-                                                setFieldValue={setFieldValue}
-                                            />
+                                            <Form.Control
+                                            type="text"
+                                            name="logo"
+                                            value={values.logo}
+                                            onChange={handleChange}
+                                            isValid={touched.logo && !errors.logo}
+                                            isInvalid={!!errors.logo}
+                                        />
                                     </Form.Group>
 
-                                    <Form.Group as={Col} md="6" controlId="companyUrl">
+                                    <Form.Group as={Col} md="6" controlId="url">
                                         <Form.Label> <b> Pagina Web </b> </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            name="companyUrl"
-                                            value={values.companyUrl}
+                                            name="url"
+                                            value={values.url}
                                             onChange={handleChange}
-                                            isValid={touched.companyUrl && !errors.companyUrl}
-                                            isInvalid={!!errors.companyUrl}
+                                            isValid={touched.url && !errors.url}
+                                            isInvalid={!!errors.url}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.companyUrl}
+                                            {errors.url}
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group as={Col} md="6" controlId="companyLocation">
+                                    <Form.Group as={Col} md="6" controlId="location">
                                         <Form.Label> <b> Ubicacion </b> </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            name="companyLocation"
-                                            value={values.companyLocation}
+                                            name="location"
+                                            value={values.location}
                                             onChange={handleChange}
-                                            isValid={touched.companyLocation && !errors.companyLocation}
-                                            isInvalid={!!errors.companyLocation}
+                                            isValid={touched.location && !errors.location}
+                                            isInvalid={!!errors.location}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.companyLocation}
+                                            {errors.location}
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group as={Col} md="6" controlId="userEmail">
+                                    <Form.Group as={Col} md="6" controlId="companyEmail">
                                         <Form.Label> <b> Email </b> </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            name="userEmail"
-                                            value={values.userEmail}
+                                            name="companyEmail"
+                                            value={values.companyEmail}
                                             onChange={handleChange}
-                                            isValid={touched.userEmail && !errors.userEmail}
-                                            isInvalid={!!errors.userEmail}
+                                            isValid={touched.companyEmail && !errors.companyEmail}
+                                            isInvalid={!!errors.companyEmail}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.userEmail}
+                                            {errors.companyEmail}
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     </Form.Row>
