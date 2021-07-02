@@ -8,7 +8,6 @@ namespace BolsaEmpleos.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    [Authorize]
     public class PositionController : ControllerBase
     {
         private readonly IPositionService _service;

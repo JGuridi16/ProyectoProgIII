@@ -16,7 +16,6 @@ namespace BolsaEmpleos.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
