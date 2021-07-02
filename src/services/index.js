@@ -1,16 +1,9 @@
 import axios from 'axios';
-// import { tokenStorage } from 'localStorage';
-// import { XmlState } from 'xmlStates';
-// import { StatusCode } from 'statusCode';
-
-
 
 const baseURL = 'https://localhost:44356/api';
 const baseARSURL = '';
 
-// axios.defaults.headers.common['Access-Control-Allow-Origin'] = ANY_ORIGIN;
 const get = async (endpoint) => {
-    // addToken();
     return await axios.get(`${baseURL}/${endpoint}`);
 };
 
@@ -107,4 +100,4 @@ const postARS = async (endpoint, data) => {
 //     }
 // };
 
-export { get, post, put, onDelete, postARS, updateMany, uploadMany, putFiles, getAnonymous, patch, postFile, putDocument, download };
+export { get, post, put, onDelete, postARS, updateMany, uploadMany, putFiles, getAnonymous, patch, postFile, putDocument, download, baseURL };
