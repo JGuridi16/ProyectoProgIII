@@ -9,16 +9,15 @@ const MainPage = (props) => {
     const [position,setPosition] = useState({});
 
     useEffect(() => {
-        (async function mounted() {
-            setIsLoading(true);
-            Promise.all([
-                get('Position'), get(`User/${props.userId}`)
-            ]).then(([resPosition, resUser]) => {
-                setPosition(resPosition.data);
-                setUser(resUser.data);
-            });
-        })();
+        setIsLoading(true);
+        Promise.all([
+            get('Position'), get(`User/${props.userId}`)
+        ]).then(([resPosition, resUser]) => {
+            setPosition(resPosition.data);
+            setUser(resUser.data);
+        });
     }, []);
+    
     return (
       <div>
         <Card className="p-3 my-4">
